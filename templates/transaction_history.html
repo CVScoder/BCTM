@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Transaction History</title>
+    <style>
+        table { border-collapse: collapse; width: 100%; }
+        th, td { border: 1px solid black; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+    </style>
+</head>
+<body>
+    <h1>Transaction History</h1>
+    {% if transactions %}
+    <table>
+        <tr>
+            <th>Tx Hash</th>
+            <th>Recipient</th>
+            <th>Amount (ETH)</th>
+            <th>Timestamp</th>
+        </tr>
+        {% for tx in transactions %}
+        <tr>
+            <td>{{ tx[0] }}</td>
+            <td>{{ tx[1] }}</td>
+            <td>{{ tx[2] }}</td>
+            <td>{{ tx[3] | datetime }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+    <p>No transactions found.</p>
+    {% endif %}
+    <br>
+    <a href="{{ url_for('index') }}">Back to Home</a>
+</body>
+</html>

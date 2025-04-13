@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Crypto Wallet</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center">Welcome to Your Crypto Wallet</h1>
+        {% if current_user.is_authenticated %}
+            <p class="text-center">Hello, {{ current_user.username }}! <a href="{{ url_for('logout') }}">Logout</a></p>
+        {% else %}
+            <p class="text-center"><a href="{{ url_for('login') }}">Login</a> | <a href="{{ url_for('register') }}">Register</a></p>
+        {% endif %}
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        {% if current_user.eth_address %}
+            <h2>Your Wallet</h2>
+            <p><a href="{{ url_for('wallet') }}" class="btn btn-primary">View Wallet Details</a></p>
+        {% else %}
+            <h2>Wallet Setup</h2>
+            <p><a href="{{ url_for('setup_wallet') }}" class="btn btn-primary">Set Up Wallet</a></p>
+        {% endif %}
+
+        <div class="row">
+            <div class="col-md-6 offset-md-3">
+                <div class="list-group">
+                    <a href="{{ url_for('get_balance') }}" class="list-group-item list-group-item-action">Check Balance (JSON Response)</a>
+                    <a href="{{ url_for('send_transaction') }}" class="list-group-item list-group-item-action">Send Transaction</a>
+                    <a href="{{ url_for('transaction_history') }}" class="list-group-item list-group-item-action">Transaction History</a>
+                    <a href="{{ url_for('receive') }}" class="list-group-item list-group-item-action">Receive (QR Code)</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

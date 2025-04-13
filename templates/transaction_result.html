@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Transaction Result</title>
+    <style>
+        .error { color: red; }
+        .success { color: green; }
+    </style>
+</head>
+<body>
+    {% if status == "success" %}
+        <h1 class="success">Transaction Sent Successfully!</h1>
+        <p>Transaction hash:</p>
+        <pre>{{ tx_hash }}</pre>
+    {% else %}
+        <h1 class="error">Transaction Failed</h1>
+        <p>Error message:</p>
+        <pre>{{ error }}</pre>
+    {% endif %}
+    <br>
+    <a href="{{ url_for('index') }}">Back to Home</a>
+    <a href="{{ url_for('send_transaction') }}">Try Another Transaction</a>
+</body>
+</html>

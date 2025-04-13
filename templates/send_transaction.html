@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Send Transaction</title>
+        <style>
+            .balance { 
+                margin: 20px 0;
+                padding: 10px;
+                background-color: #f0f0f0;
+                border-radius: 5px;
+            }
+            .warning {
+                color: #ff6b6b;
+                margin-top: 10px;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Send Transaction</h1>
+        
+        <div class="balance">
+            <h3>Current Wallet Balance: {{ balance }} ETH</h3>
+            {% if balance == 0 %}
+            <p class="warning">
+                Your wallet has no ETH. To get started:
+                <ol>
+                    <li>Visit <a href="https://sepoliafaucet.com" target="_blank">Sepolia Faucet</a></li>
+                    <li>Connect your wallet</li>
+                    <li>Request test ETH</li>
+                </ol>
+            </p>
+            {% endif %}
+        </div>
+
+        <form action="{{ url_for('send_transaction') }}" method="post">
+            <label for="recipient">Recipient Address:</label><br>
+            <input type="text" id="recipient" name="recipient" required><br><br>
+
+            <label for="amount">Amount (Ether):</label><br>
+            <input type="number" id="amount" name="amount" step="any" required><br>
+            <small>Make sure to leave enough ETH for gas fees</small><br><br>
+
+            <input type="submit" value="Send" {% if balance == 0 %}disabled{% endif %}>
+        </form>
+        <br>
+        <a href="{{ url_for('index') }}">Back to Home</a>
+    </body>
+</html>
