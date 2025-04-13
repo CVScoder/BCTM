@@ -1,49 +1,63 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title>Send Transaction</title>
-        <style>
-            .balance { 
-                margin: 20px 0;
-                padding: 10px;
-                background-color: #f0f0f0;
-                border-radius: 5px;
-            }
-            .warning {
-                color: #ff6b6b;
-                margin-top: 10px;
-            }
-        </style>
-    </head>
-    <body>
-        <h1>Send Transaction</h1>
-        
-        <div class="balance">
-            <h3>Current Wallet Balance: {{ balance }} ETH</h3>
-            {% if balance == 0 %}
-            <p class="warning">
-                Your wallet has no ETH. To get started:
-                <ol>
-                    <li>Visit <a href="https://sepoliafaucet.com" target="_blank">Sepolia Faucet</a></li>
-                    <li>Connect your wallet</li>
-                    <li>Request test ETH</li>
-                </ol>
-            </p>
-            {% endif %}
+{% extends 'base.html' %}
+{% block title %}Send Transaction{% endblock %}
+{% block content %}
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0"><i class="bi bi-send me-2"></i>Send Transaction</h5>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-info">
+                        <i class="bi bi-currency-bitcoin me-2"></i><strong>Current Balance:</strong> {{ balance }} ETH
+                    </div>
+                    {% if balance == 0 %}
+                        <div class="alert alert-warning">
+                            <p>Your wallet has no ETH. To get started:</p>
+                            <ol>
+                                <li>Visit <a href="https://sepoliafaucet.com" target="_blank">Sepolia Faucet</a></li>
+                                <li>Connect your wallet</li>
+                                <li>Request test ETH</li>
+                            </ol>
+                        </div>
+                    {% endif %}
+                    <div id="formWrapper">
+                        <form method="POST" class="needs-validation" novalidate id="transactionForm">
+                            <div class="mb-3">
+                                <label for="recipient" class="form-label"><i class="bi bi-person me-2"></i>Recipient Address</label>
+                                <input type="text" id="recipient" name="recipient" class="form-control" required>
+                                <div class="invalid-feedback">Please enter a valid recipient address.</div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="amount" class="form-label"><i class="bi bi-currency-exchange me-2"></i>Amount (ETH)</label>
+                                <input type="number" id="amount" name="amount" step="any" class="form-control" required>
+                                <div class="invalid-feedback">Please enter a valid amount.</div>
+                                <small class="form-text text-muted">Ensure enough ETH remains for gas fees.</small>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100" {% if balance == 0 %}disabled{% endif %} id="sendButton">Send</button>
+                        </form>
+                    </div>
+                    <div id="spinner" class="d-none text-center mt-3">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Sending transaction...</span>
+                        </div>
+                        <p class="mt-2">Processing your transaction...</p>
+                    </div>
+                </div>
+                <div class="card-footer text-center">
+                    <a href="{{ url_for('index') }}" class="btn btn-secondary">Back to Home</a>
+                </div>
+            </div>
         </div>
-
-        <form action="{{ url_for('send_transaction') }}" method="post">
-            <label for="recipient">Recipient Address:</label><br>
-            <input type="text" id="recipient" name="recipient" required><br><br>
-
-            <label for="amount">Amount (Ether):</label><br>
-            <input type="number" id="amount" name="amount" step="any" required><br>
-            <small>Make sure to leave enough ETH for gas fees</small><br><br>
-
-            <input type="submit" value="Send" {% if balance == 0 %}disabled{% endif %}>
-        </form>
-        <br>
-        <a href="{{ url_for('index') }}">Back to Home</a>
-    </body>
-</html>
+    </div>
+{% endblock %}
+{% block extra_js %}
+    <script>
+        document.getElementById('transactionForm').addEventListener('submit', function(event) {
+            // Show spinner and hide form
+            document.getElementById('spinner').classList.remove('d-none');
+            document.getElementById('formWrapper').classList.add('d-none');
+            document.getElementById('sendButton').disabled = true;
+        });
+    </script>
+{% endblock %}

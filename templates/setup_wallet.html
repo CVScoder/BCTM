@@ -1,32 +1,33 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Set Up Wallet</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-</head>
-<body>
-    <div class="container mt-5">
-        <h1 class="text-center">Set Up Your Wallet</h1>
-        <div class="row">
-            <div class="col-md-6 offset-md-3">
-                <form method="POST">
-                    <div class="form-group">
-                        <label for="eth_address">Ethereum Address:</label>
-                        <input type="text" id="eth_address" name="eth_address" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="eth_private_key">Ethereum Private Key:</label>
-                        <input type="text" id="eth_private_key" name="eth_private_key" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="password">Password (for encryption):</label>
-                        <input type="password" id="password" name="password" class="form-control" required>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Save Wallet</button>
-                </form>
+{% extends 'base.html' %}
+{% block title %}Set Up Wallet{% endblock %}
+{% block content %}
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0"><i class="bi bi-gear me-2"></i>Set Up Your Wallet</h5>
+                </div>
+                <div class="card-body">
+                    <form method="POST" class="needs-validation" novalidate>
+                        <div class="mb-3">
+                            <label for="eth_address" class="form-label"><i class="bi bi-ethereum me-2"></i>Ethereum Address</label>
+                            <input type="text" id="eth_address" name="eth_address" class="form-control" required>
+                            <div class="invalid-feedback">Please enter your Ethereum address.</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="eth_private_key" class="form-label"><i class="bi bi-key me-2"></i>Ethereum Private Key</label>
+                            <input type="text" id="eth_private_key" name="eth_private_key" class="form-control" required>
+                            <div class="invalid-feedback">Please enter your private key.</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label"><i class="bi bi-lock me-2"></i>Password (for encryption)</label>
+                            <input type="password" id="password" name="password" class="form-control" required>
+                            <div class="invalid-feedback">Please enter a password.</div>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Save Wallet</button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
-</body>
-</html>
+{% endblock %}

@@ -1,25 +1,25 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Transaction Result</title>
-    <style>
-        .error { color: red; }
-        .success { color: green; }
-    </style>
-</head>
-<body>
-    {% if status == "success" %}
-        <h1 class="success">Transaction Sent Successfully!</h1>
-        <p>Transaction hash:</p>
-        <pre>{{ tx_hash }}</pre>
-    {% else %}
-        <h1 class="error">Transaction Failed</h1>
-        <p>Error message:</p>
-        <pre>{{ error }}</pre>
-    {% endif %}
-    <br>
-    <a href="{{ url_for('index') }}">Back to Home</a>
-    <a href="{{ url_for('send_transaction') }}">Try Another Transaction</a>
-</body>
-</html>
+{% extends 'base.html' %}
+{% block title %}Transaction Result{% endblock %}
+{% block content %}
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            {% if status == "success" %}
+                <div class="alert alert-success" role="alert">
+                    <h4 class="alert-heading"><i class="bi bi-check-circle me-2"></i>Transaction Sent Successfully!</h4>
+                    <p><strong>Transaction Hash:</strong></p>
+                    <pre>{{ tx_hash }}</pre>
+                </div>
+            {% else %}
+                <div class="alert alert-danger" role="alert">
+                    <h4 class="alert-heading"><i class="bi bi-x-circle me-2"></i>Transaction Failed</h4>
+                    <p><strong>Error Message:</strong></p>
+                    <pre>{{ error }}</pre>
+                </div>
+            {% endif %}
+            <div class="text-center">
+                <a href="{{ url_for('index') }}" class="btn btn-primary me-2">Back to Home</a>
+                <a href="{{ url_for('send_transaction') }}" class="btn btn-secondary">Try Another Transaction</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}
