@@ -236,7 +236,7 @@ def send_transaction():
             if balance_wei < total_cost_wei:
                 raise ValueError(f"Insufficient funds! Need {w3.from_wei(total_cost_wei, 'ether')} ETH.")
             signed_tx = w3.eth.account.sign_transaction(tx, decrypted_key)
-            tx_hash = w3.eth.send_raw_transaction(signed_tx.rawTransaction)
+            tx_hash = w3.eth.send_raw_transaction(signed_tx.raw_transaction)
             tx_receipt = w3.eth.wait_for_transaction_receipt(tx_hash, timeout=120)
             
             conn = sqlite3.connect('wallet.db')

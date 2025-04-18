@@ -34,6 +34,11 @@
                                 <div class="invalid-feedback">Please enter a valid amount.</div>
                                 <small class="form-text text-muted">Ensure enough ETH remains for gas fees.</small>
                             </div>
+                            <div class="mb-3">
+                                <label for="password" class="form-label"><i class="bi bi-key me-2"></i>Password</label>
+                                <input type="password" id="password" name="password" class="form-control" required>
+                                <div class="invalid-feedback">Please enter your password to decrypt the private key.</div>
+                            </div>
                             <button type="submit" class="btn btn-primary w-100" {% if balance == 0 %}disabled{% endif %} id="sendButton">Send</button>
                         </form>
                     </div>
@@ -50,6 +55,8 @@
             </div>
         </div>
     </div>
+    <br>
+    <br>
 {% endblock %}
 {% block extra_js %}
     <script>
