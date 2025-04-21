@@ -1,25 +1,136 @@
 {% extends 'base.html' %}
 {% block title %}Transaction Result{% endblock %}
 {% block content %}
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            {% if status == "success" %}
-                <div class="alert alert-success" role="alert">
-                    <h4 class="alert-heading"><i class="bi bi-check-circle me-2"></i>Transaction Sent Successfully!</h4>
-                    <p><strong>Transaction Hash:</strong></p>
-                    <pre>{{ tx_hash }}</pre>
+    <div class="flex justify-center items-center py-8">
+        <div class="w-full max-w-2xl">
+            <div class="animate-in bg-white rounded-xl shadow-lg overflow-hidden">
+                {% if status == "success" %}
+                    <div class="bg-gradient-to-r from-green-600 to-emerald-600 px-6 py-4">
+                        <h2 class="text-xl font-bold text-white flex items-center">
+                            <i class="bi bi-check-circle mr-2"></i>Transaction Successful
+                        </h2>
+                    </div>
+                    <div class="p-6">
+                        <div class="mb-6 p-4 bg-green-50 rounded-lg border-l-4 border-green-500">
+                            <h3 class="text-lg font-medium text-green-800 mb-2">Transaction Sent Successfully!</h3>
+                            <p class="text-green-700 mb-2"><strong>Transaction Hash:</strong></p>
+                            <div class="p-3 bg-white rounded border border-green-200">
+                                <p class="font-mono text-sm break-all">{{ tx_hash }}</p>
+                            </div>
+                            <button id="copyTxHash" class="mt-2 inline-flex items-center px-3 py-1 bg-green-100 hover:bg-green-200 text-green-800 text-sm rounded transition-colors duration-200">
+                                <i class="bi bi-clipboard mr-1"></i>Copy Hash
+                            </button>
+                        </div>
+                        
+                        <div class="p-4 bg-blue-50 rounded-lg border border-blue-100 mb-6">
+                            <div class="flex items-center">
+                                <div class="w-10 h-10 flex items-center justify-center rounded-full bg-blue-100 text-blue-600 mr-3">
+                                    <i class="bi bi-info-circle text-xl"></i>
+                                </div>
+                                <p class="text-sm text-blue-700">
+                                    Your transaction has been submitted to the network. It may take a few minutes to be confirmed.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="bg-gradient-to-r from-red-600 to-pink-600 px-6 py-4">
+                        <h2 class="text-xl font-bold text-white flex items-center">
+                            <i class="bi bi-x-circle mr-2"></i>Transaction Failed
+                        </h2>
+                    </div>
+                    <div class="p-6">
+                        <div class="mb-6 p-4 bg-red-50 rounded-lg border-l-4 border-red-500">
+                            <h3 class="text-lg font-medium text-red-800 mb-2">Transaction Failed</h3>
+                            <p class="text-red-700 mb-2"><strong>Error Message:</strong></p>
+                            <div class="p-3 bg-white rounded border border-red-200">
+                                <p class="font-mono text-sm break-all">{{ error }}</p>
+                            </div>
+                        </div>
+                        
+                        <div class="p-4 bg-yellow-50 rounded-lg border border-yellow-100 mb-6">
+                            <div class="flex items-center">
+                                <div class="w-10 h-10 flex items-center justify-center rounded-full bg-yellow-100 text-yellow-600 mr-3">
+                                    <i class="bi bi-exclamation-triangle text-xl"></i>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-yellow-700">
+                                        Common reasons for transaction failures:
+                                    </p>
+                                    <ul class="list-disc list-inside text-xs text-yellow-700 mt-1">
+                                        <li>Insufficient funds for gas</li>
+                                        <li>Invalid recipient address</li>
+                                        <li>Network congestion</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+                
+                <div class="px-6 pb-6 flex justify-center space-x-4">
+                    <a href="{{ url_for('index') }}" class="inline-flex items-center px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-800 rounded-lg transition-colors duration-200">
+                        <i class="bi bi-house mr-2"></i>Back to Home
+                    </a>
+                    <a href="{{ url_for('send_transaction') }}" class="inline-flex items-center px-4 py-2 {% if status == 'success' %}bg-green-600 hover:bg-green-700 text-white{% else %}bg-blue-600 hover:bg-blue-700 text-white{% endif %} rounded-lg transition-colors duration-200">
+                        <i class="bi bi-send mr-2"></i>New Transaction
+                    </a>
                 </div>
-            {% else %}
-                <div class="alert alert-danger" role="alert">
-                    <h4 class="alert-heading"><i class="bi bi-x-circle me-2"></i>Transaction Failed</h4>
-                    <p><strong>Error Message:</strong></p>
-                    <pre>{{ error }}</pre>
-                </div>
-            {% endif %}
-            <div class="text-center">
-                <a href="{{ url_for('index') }}" class="btn btn-primary me-2">Back to Home</a>
-                <a href="{{ url_for('send_transaction') }}" class="btn btn-secondary">Try Another Transaction</a>
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Add floating effect to the card
+        anime({
+            targets: '.animate-in',
+            translateY: [30, 0],
+            opacity: [0, 1],
+            easing: 'easeOutElastic(1, .8)',
+            duration: 1200,
+            delay: 300
+        });
+        
+        {% if status == "success" %}
+            // Success animation
+            anime({
+                targets: '.bi-check-circle',
+                scale: [0, 1],
+                opacity: [0, 1],
+                easing: 'easeOutElastic(1, .8)',
+                duration: 1500,
+                delay: 600
+            });
+            
+            // Copy transaction hash functionality
+            const copyButton = document.getElementById('copyTxHash');
+            if (copyButton) {
+                copyButton.addEventListener('click', () => {
+                    const txHash = '{{ tx_hash }}';
+                    navigator.clipboard.writeText(txHash).then(() => {
+                        // Change button text temporarily
+                        const originalText = copyButton.innerHTML;
+                        copyButton.innerHTML = '<i class="bi bi-check-lg mr-1"></i>Copied!';
+                        
+                        setTimeout(() => {
+                            copyButton.innerHTML = originalText;
+                        }, 2000);
+                    });
+                });
+            }
+        {% else %}
+            // Error animation
+            anime({
+                targets: '.bi-x-circle',
+                rotate: [0, 5, -5, 5, -5, 0],
+                duration: 800,
+                easing: 'easeInOutSine',
+                delay: 600
+            });
+        {% endif %}
+    });
+</script>
 {% endblock %}

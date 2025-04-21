@@ -1,25 +1,140 @@
 {% extends 'base.html' %}
 {% block title %}Wallet Details{% endblock %}
 {% block content %}
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card shadow-sm">
-                <div class="card-header bg-primary text-white">
-                    <h5 class="mb-0"><i class="bi bi-wallet me-2"></i>Your Wallet Details</h5>
+    <div class="flex justify-center items-center py-8">
+        <div class="w-full max-w-2xl">
+            <div class="animate-in bg-white rounded-xl shadow-lg overflow-hidden">
+                <div class="bg-gradient-to-r from-blue-600 to-indigo-600 px-6 py-4">
+                    <h2 class="text-xl font-bold text-white flex items-center">
+                        <i class="bi bi-wallet mr-2"></i>Your Wallet Details
+                    </h2>
                 </div>
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item"><i class="bi bi-ethereum me-2"></i><strong>Ethereum Address:</strong> {{ wallet.eth_address }}</li>
-                    <li class="list-group-item"><i class="bi bi-key me-2"></i><strong>Ethereum Private Key:</strong> {{ wallet.eth_private_key }}</li>
-                    <li class="list-group-item"><i class="bi bi-currency-bitcoin me-2"></i><strong>Balance:</strong> {{ wallet.balance }} ETH</li>
-                    {% if wallet.rsa_public_key %}
-                        <li class="list-group-item"><i class="bi bi-shield-lock me-2"></i><strong>RSA Public Key:</strong> {{ wallet.rsa_public_key }}</li>
-                        <li class="list-group-item"><i class="bi bi-lock-fill me-2"></i><strong>Encrypted RSA Private Key:</strong> {{ wallet.encrypted_rsa_private }}</li>
-                    {% endif %}
-                </ul>
-                <div class="card-footer text-center">
-                    <a href="{{ url_for('index') }}" class="btn btn-primary">Back to Home</a>
+                <div class="p-6 space-y-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="p-4 bg-blue-50 rounded-lg border border-blue-100 wallet-detail">
+                            <div class="flex items-start">
+                                <div class="w-10 h-10 flex items-center justify-center rounded-full bg-blue-100 text-blue-600 mr-3">
+                                    <i class="bi bi-ethereum text-xl"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-sm font-medium text-blue-800">Ethereum Address</h3>
+                                    <p class="text-xs font-mono mt-1 break-all text-blue-700">{{ wallet.eth_address }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="p-4 bg-purple-50 rounded-lg border border-purple-100 wallet-detail">
+                            <div class="flex items-start">
+                                <div class="w-10 h-10 flex items-center justify-center rounded-full bg-purple-100 text-purple-600 mr-3">
+                                    <i class="bi bi-key text-xl"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-sm font-medium text-purple-800">Ethereum Private Key</h3>
+                                    <p class="text-xs font-mono mt-1 break-all text-purple-700">{{ wallet.eth_private_key }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="p-4 bg-green-50 rounded-lg border border-green-100 wallet-detail">
+                            <div class="flex items-start">
+                                <div class="w-10 h-10 flex items-center justify-center rounded-full bg-green-100 text-green-600 mr-3">
+                                    <i class="bi bi-currency-bitcoin text-xl"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-sm font-medium text-green-800">Balance</h3>
+                                    <p class="text-2xl font-bold mt-1 text-green-700">{{ wallet.balance }} ETH</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        {% if wallet.rsa_public_key %}
+                            <div class="p-4 bg-amber-50 rounded-lg border border-amber-100 wallet-detail">
+                                <div class="flex items-start">
+                                    <div class="w-10 h-10 flex items-center justify-center rounded-full bg-amber-100 text-amber-600 mr-3">
+                                        <i class="bi bi-shield-lock text-xl"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="text-sm font-medium text-amber-800">RSA Public Key</h3>
+                                        <p class="text-xs font-mono mt-1 break-all text-amber-700">{{ wallet.rsa_public_key }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="p-4 bg-red-50 rounded-lg border border-red-100 wallet-detail md:col-span-2">
+                                <div class="flex items-start">
+                                    <div class="w-10 h-10 flex items-center justify-center rounded-full bg-red-100 text-red-600 mr-3">
+                                        <i class="bi bi-lock-fill text-xl"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="text-sm font-medium text-red-800">Encrypted RSA Private Key</h3>
+                                        <p class="text-xs font-mono mt-1 break-all text-red-700">{{ wallet.encrypted_rsa_private }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="flex justify-center mt-6">
+                        <div class="flex space-x-4">
+                            <a href="{{ url_for('index') }}" class="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors duration-200">
+                                <i class="bi bi-house mr-2"></i>Back to Home
+                            </a>
+                            <a href="{{ url_for('send_transaction') }}" class="inline-flex items-center px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors duration-200">
+                                <i class="bi bi-send mr-2"></i>Send Transaction
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Add floating effect to the wallet card
+        anime({
+            targets: '.animate-in',
+            translateY: [30, 0],
+            opacity: [0, 1],
+            easing: 'easeOutElastic(1, .8)',
+            duration: 1200,
+            delay: 300
+        });
+        
+        // Staggered animation for wallet details
+        anime({
+            targets: '.wallet-detail',
+            translateX: [-20, 0],
+            opacity: [0, 1],
+            easing: 'easeOutQuad',
+            duration: 800,
+            delay: anime.stagger(100, {start: 600})
+        });
+        
+        // Add hover effect for wallet details
+        document.querySelectorAll('.wallet-detail').forEach(detail => {
+            detail.addEventListener('mouseenter', () => {
+                anime({
+                    targets: detail,
+                    scale: 1.03,
+                    boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
+                    duration: 300,
+                    easing: 'easeOutQuad'
+                });
+            });
+            
+            detail.addEventListener('mouseleave', () => {
+                anime({
+                    targets: detail,
+                    scale: 1,
+                    boxShadow: '0 0 0 0 rgba(0, 0, 0, 0)',
+                    duration: 300,
+                    easing: 'easeOutQuad'
+                });
+            });
+        });
+    });
+</script>
 {% endblock %}
