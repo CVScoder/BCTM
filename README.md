@@ -113,14 +113,6 @@ app.secret_key = os.getenv('FLASK_SECRET_KEY', 'crypto')
 INFURA_URL = f"https://sepolia.infura.io/v3/{os.getenv('INFURA_PROJECT_ID')}"
 ```
 
-### 6. Add a Logo
-
-Place your logo at `static/logo.png`. Recommended size: **150x30 px**.
-Alternatively, use a placeholder:
-
-```html
-<img src="https://via.placeholder.com/150x30?text=Logo" alt="Logo" class="w-20 h-10 rounded-lg">
-```
 
 ---
 
